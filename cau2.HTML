@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Game sắp xếp từ - Câu 2</title>
+<style>
+body{
+  margin:0;
+  padding:0;
+  font-family:sans-serif;
+  background:#f3f4f6;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+
+.container{
+  text-align:center;
+  width:90vw;
+  max-width:600px;
+  background:white;
+  padding:20px;
+  border-radius:20px;
+  box-shadow:0 0 20px rgba(0,0,0,0.1);
+  font-size:calc(18px + 1vw);
+}
+
+.word{
+  display:inline-block;
+  background:#e5e7eb;
+  padding:10px 16px;
+  border-radius:12px;
+  margin:6px;
+  cursor:pointer;
+  border:1px solid #ccc;
+}
+.word.selected{
+  background:#818cf8;
+  color:white;
+}
+
+#selected{margin-top:20px;font-weight:bold;min-height:32px;}
+#result{margin-top:20px;}
+button{
+  padding:12px 22px;
+  margin-top:16px;
+  font-size:inherit;
+  border-radius:10px;
+  border:none;
+  background:#4ade80;
+  color:white;
+  cursor:pointer;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h2>Nghe âm thanh và sắp xếp từ cho đúng</h2>
+<button onclick="playQuestionAudio()">Nghe âm thanh</button>
+
+<div id="words"></div>
+<div id="selected"></div>
+
+<button onclick="checkResult()">Kiểm tra</button>
+
+<div id="result"></div>
+
+<button onclick="goNext()">Câu tiếp theo</button>
+
+<audio id="audioQuestion" src="audio/question2.mp3"></audio>
+<audio id="audioCorrect" src="audio/dung.mp3"></audio>
+<audio id="audioWrong" src="audio/sai.mp3"></audio>
+
+<script>
+const answer = ["Đi","đến","nơi","nào"];
+const shuffled = ["nào","đến","Đi","nơi"];
+
+const wordsDiv = document.getElementById("words");
+const selectedDiv = document.getElementById("selected");
+const resultDiv = document.getElementById("result");
+let pick = [];
+
+shuffled.forEach(w=>{
+    let span=document.createElement("span");
+    span.className="word";
+    span.innerText=w;
+    span.onclick=()=>selectWord(w,span);
+    wordsDiv.appendChild(span);
+});
+
+function selectWord(w,el){
+    if(el.classList.contains("selected")) return;
+    el.classList.add("selected");
+    pick.push(w);
+    selectedDiv.innerText = pick.join(" ");
+}
+
+function checkResult(){
+    if(pick.join(" ")===answer.join(" ")){
+        document.getElementById("audioCorrect").play();
+        resultDiv.innerHTML = "<span style='color:green'>ĐÚNG!</span>";
+    }else{
+        document.getElementById("audioWrong").play();
+        resultDiv.innerHTML = "<span style='color:red'>SAI!</span><br>Đáp án đúng: "+answer.join(" ");
+    }
+}
+
+function playQuestionAudio(){
+    const a = document.getElementById("audioQuestion");
+    a.play().catch(e=>{
+        alert("Browser đang chặn âm thanh. Click vào màn hình rồi thử lại.");
+    });
+}
+
+function goNext(){
+    window.location.href="cau3.html";
+}
+</script>
+
+</body>
+</html>
